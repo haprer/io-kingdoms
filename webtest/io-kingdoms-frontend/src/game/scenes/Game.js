@@ -1,7 +1,8 @@
 import { EventBus } from '../EventBus';
 import { Scene } from 'phaser';
 
-import Tile from '../objects/Tile';
+import Tile from '/src/game/objects/Tile.js';
+import Soldier from '/src/game/objects/Soldier.js'
 
 export class Game extends Scene
 {
@@ -16,12 +17,14 @@ export class Game extends Scene
 
     create ()
     {
-        this.cameras.main.setBackgroundColor(0x00ff00);
+        this.cameras.main.setBackgroundColor(0xaaaabb);
 
         //create the background grid. 
         const TILE_SIZE = 32;
-        const GRID_SIZE = 32;
+        const GRID_SIZE = 64;
     
+        this.tiles = [];
+        
         // Initialize the tiles array with empty arrays
         for (let i = 0; i < GRID_SIZE; i++) {
           this.tiles[i] = [];
@@ -36,7 +39,15 @@ export class Game extends Scene
             this.tiles[i][j] = tile; // Save the tile object in the array
           }
         }
+        
+        //test placing a solder on a tile
+        //test: 32, 32
+        this.testSoldier = new Soldier(this, TILE_SIZE * 10, TILE_SIZE * 10);
+        this.add.existing(this.testSoldier);
+        
 
+        
+        //Sections: Camera actions
         //define camera motions 
         this.input.on('pointerdown', (pointer) => {
             this.input.dragStartX = pointer.x;
@@ -51,7 +62,7 @@ export class Game extends Scene
             }
         });
 
-
+        //finished loading scene
         EventBus.emit('current-scene-ready', this);
     }
 
