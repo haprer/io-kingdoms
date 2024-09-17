@@ -15,8 +15,8 @@ export class Game extends Scene
         
     }
 
-    create ()
-    {
+    create () {
+
         this.cameras.main.setBackgroundColor(0xaaaabb);
 
         //create the background grid. 

@@ -1,5 +1,6 @@
 import { EventBus } from '../EventBus';
 import { Scene } from 'phaser';
+import FieldWebSocketManager from '../FieldWebSocketManager';
 
 export class MainMenu extends Scene
 {
@@ -23,6 +24,11 @@ export class MainMenu extends Scene
         }).setDepth(100).setOrigin(0.5);
         
         EventBus.emit('current-scene-ready', this);
+
+
+        //create the websocket used for field data. 
+        //This is a prerequisite for starting the game scene 
+        this.sys.game.globals = {fieldsock: new FieldWebSocketManager()}
     }
 
     changeScene ()
@@ -33,7 +39,11 @@ export class MainMenu extends Scene
             this.logoTween = null;
         }
 
-        this.scene.start('Game');
+        if (this.sys.game.globals.fieldsock.isActive()) {
+            this.scene.start('Game');
+        } else { 
+            console.log("Not opening game scene, failed to connect websocket.")
+        }
     }
 
     moveLogo (reactCallback)
