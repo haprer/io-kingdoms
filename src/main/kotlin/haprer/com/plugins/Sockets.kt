@@ -18,7 +18,9 @@ fun Application.configureSockets() {
     routing {
         webSocket("/ws") {
             Game.addSocket(this)
-
+            for (msg in incoming) {
+                //TODO Process client requests
+            }
         }
     }
 }
