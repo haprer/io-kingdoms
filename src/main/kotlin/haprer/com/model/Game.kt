@@ -22,12 +22,14 @@ object Game {
     val socketsLock = Mutex(false);  //synchronize access to the sockets hashset
     var sockUpdateJob: Job? = null
 
-
-
     private val field: Array<Array<Int>> = Array(500) {
         Array(500) {0};
     }
 
+    init {
+        //for testing purposes TODO: remove
+        field[200][200] = 1;
+    }
 
 
 
@@ -55,6 +57,10 @@ object Game {
         }
     }
 
+    /**
+     * takes a socket out of the list held by the game, meaning it will no longer be sent updates
+     * @param socket: the socket to be removed
+     */
     suspend fun removeSocket(socket: WebSocketSession): Unit {
         socketsLock.withLock {
             sockets.remove(socket);
